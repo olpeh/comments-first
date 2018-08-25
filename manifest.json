@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "Nakkimuki",
+  "version": "1.0",
+  "description": "Tries to stop you from spamming emails (in Gmail)",
+  "icons": {
+    "48": "icons/nakkimuki-48.png",
+    "96": "icons/nakkimuki-96.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.inbox.google.com/*", "*://*.mail.google.com/*"],
+      "js": ["dist/nakkimuki.js"]
+    }
+  ]
+}
