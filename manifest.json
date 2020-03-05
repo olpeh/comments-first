@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
-  "name": "Nakkimuki",
+  "name": "Comments first",
   "version": "1.0",
-  "description": "Tries to stop you from spamming emails (in Gmail)",
+  "description": "Shows you the most important content first",
   "icons": {
-    "48": "icons/nakkimuki-48.png",
-    "96": "icons/nakkimuki-96.png"
+    "48": "icons/comments-48.png",
+    "96": "icons/comments-96.png"
   },
   "content_scripts": [
     {
-      "matches": ["*://*.inbox.google.com/*", "*://*.mail.google.com/*"],
-      "js": ["dist/nakkimuki.js"]
+      "matches": ["https://www.is.fi/*", "https://www.hs.fi/*"],
+      "js": ["dist/comments.js"]
     }
   ]
 }

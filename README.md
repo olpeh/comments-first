@@ -1,2 +1,8 @@
 # nakkimuki
-WIP – Possibly a browser extension that tries to stop you from spamming emails
+
+WIP – Maybe something coming up
+
+## Development
+
+- `yarn`
+- `yarn dev`

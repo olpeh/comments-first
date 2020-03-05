@@ -1,6 +1,5 @@
-console.log('Nakkimuki started!');
+console.log('Comments first started!');
 
-// https://inbox.google.com/ compose -> send button selector
 const inboxSendBtn = document.querySelector('[jsaction="compose2.send"]');
 const inboxToReceivers = document.querySelectorAll(
   '[jsaction^="mousedown:compose"][jsaction*="chip_mousedown"]'

@@ -1,5 +1,5 @@
 {
-  "name": "nakkimuki",
+  "name": "comments-first",
   "version": "1.0.0",
   "description": "WIP",
   "scripts": {
@@ -7,12 +7,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/olpeh/nakkimuki.git"
+    "url": "git+https://github.com/olpeh/comments-first.git"
   },
   "author": "Olavi Haapala",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/olpeh/nakkimuki/issues"
+    "url": "https://github.com/olpeh/comments-first/issues"
   },
-  "homepage": "https://github.com/olpeh/nakkimuki#readme"
+  "homepage": "https://github.com/olpeh/comments-first#readme",
+  "dependencies": {
+    "typescript": "^3.8.3"
+  }
 }
