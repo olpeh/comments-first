@@ -14,26 +14,22 @@ const addCommentsIframe = () => {
     const articleId = resolveId(document.location.pathname);
     const iframeUrl = `https://${document.location.host}/iframe/comments/${articleId}`;
 
-    console.log('Comments first started!', isArticlePage(), {
-      articleId,
-      iframeUrl
-    });
-
     const mainContent = document.getElementById('page-main-content');
 
-    mainContent.insertAdjacentHTML(
-      'afterend',
-      '<div id="clean-me-up" class="mb-16 bg-white border-b p-16 lg:px-32"><iframe class="w-full" src="' +
-        iframeUrl +
-        '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({ log: true }, \'#comments-on-top\');"></iframe></div>'
-    );
-  }
-};
-
-(window as any).tryToResizeThisIframe = function() {
-  if ((window as any).iFrameResize) {
-    console.log('trying to iframe-resize');
-    window as any;
+    if (!mainContent && isArticlePage()) {
+      console.warn('mainContent not found – retrying in 500ms');
+      setTimeout(() => {
+        console.log('now retrying');
+        addCommentsIframe();
+      }, 500);
+    } else {
+      mainContent.insertAdjacentHTML(
+        'afterend',
+        '<div id="clean-me-up" class="mb-16 mt-16"><iframe class="w-full bg-white border-b p-16" src="' +
+          iframeUrl +
+          '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({}, \'#comments-on-top\');"></iframe></div>'
+      );
+    }
   }
 };
 
