@@ -3,10 +3,6 @@
   "name": "Comments first",
   "version": "1.0",
   "description": "Shows you the most important content first",
-  // "icons": {
-  //   "48": "icons/comments-48.png",
-  //   "96": "icons/comments-96.png"
-  // },
   "content_scripts": [
     {
       "matches": ["https://www.is.fi/*", "https://www.hs.fi/*"],
