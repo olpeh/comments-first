@@ -16,23 +16,29 @@ const addCommentsIframe = () => {
 
     const mainContent = document.getElementById('page-main-content');
 
-    if (!mainContent && isArticlePage()) {
-      console.warn('mainContent not found – retrying in 500ms');
-      setTimeout(() => {
-        console.log('now retrying');
-        addCommentsIframe();
-      }, 500);
-    } else {
-      mainContent.insertAdjacentHTML(
-        'afterend',
-        '<div id="clean-me-up" class="max-w-wide mb-16"><iframe class="w-full bg-white border-b p-16" src="' +
-          iframeUrl +
-          '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({}, \'#comments-on-top\');"></iframe></div>'
-      );
-    }
+    mainContent.insertAdjacentHTML(
+      'afterend',
+      '<div id="clean-me-up" class="m-auto max-w-wide mb-16"><iframe class="w-full bg-white border-b p-16" src="' +
+        iframeUrl +
+        '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({}, \'#comments-on-top\');"></iframe></div>'
+    );
   }
 };
 
-window.addEventListener('content-loaded', addCommentsIframe);
+let currentUrl = document.location.pathname;
+
+const callback = function() {
+  if (currentUrl !== document.location.pathname) {
+    currentUrl = document.location.pathname;
+    setTimeout(() => {
+      addCommentsIframe();
+    }, 500);
+  }
+};
+
+const target = document.getElementById('__next');
+const observer = new MutationObserver(callback);
+const config = { childList: true, subtree: true };
+observer.observe(target, config);
 
 addCommentsIframe();
