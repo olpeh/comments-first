@@ -1,25 +1,42 @@
-console.log('Comments first started!');
+const isArticlePage = () => document.location.pathname.includes('/art-');
 
-const inboxSendBtn = document.querySelector('[jsaction="compose2.send"]');
-const inboxToReceivers = document.querySelectorAll(
-  '[jsaction^="mousedown:compose"][jsaction*="chip_mousedown"]'
-);
+const resolveId = (path: string) =>
+  path.substring(path.lastIndexOf('art-') + 4, path.lastIndexOf('.html'));
 
-console.log({ inboxSendBtn, inboxToReceivers });
-if (inboxSendBtn) {
-  inboxSendBtn.addEventListener('click', (e) => {
-    console.log(e, 'Clickedy click');
-    inboxToReceivers.forEach((receiver) =>
-      console.log({ receiver }, receiver['email'])
+const addCommentsIframe = () => {
+  // Clean up our previous mess
+  const previousMess = document.getElementById('clean-me-up');
+  if (previousMess) {
+    previousMess.remove();
+  }
+
+  if (isArticlePage()) {
+    const articleId = resolveId(document.location.pathname);
+    const iframeUrl = `https://${document.location.host}/iframe/comments/${articleId}`;
+
+    console.log('Comments first started!', isArticlePage(), {
+      articleId,
+      iframeUrl
+    });
+
+    const mainContent = document.getElementById('page-main-content');
+
+    mainContent.insertAdjacentHTML(
+      'afterend',
+      '<div id="clean-me-up" class="mb-16 bg-white border-b p-16 lg:px-32"><iframe class="w-full" src="' +
+        iframeUrl +
+        '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({ log: true }, \'#comments-on-top\');"></iframe></div>'
     );
-  });
-}
+  }
+};
 
-// Does not work because GMAIL is doing ugly stuff
-document.addEventListener('click', (e) => {
-  console.log(e.target, 'event captured');
-  e.preventDefault();
-  e.stopPropagation();
-});
+(window as any).tryToResizeThisIframe = function() {
+  if ((window as any).iFrameResize) {
+    console.log('trying to iframe-resize');
+    window as any;
+  }
+};
 
-document.body.style.border = '5px solid red';
+window.addEventListener('content-loaded', addCommentsIframe);
+
+addCommentsIframe();
