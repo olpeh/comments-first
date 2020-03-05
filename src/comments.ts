@@ -25,7 +25,7 @@ const addCommentsIframe = () => {
     } else {
       mainContent.insertAdjacentHTML(
         'afterend',
-        '<div id="clean-me-up" class="mb-16 mt-16"><iframe class="w-full bg-white border-b p-16" src="' +
+        '<div id="clean-me-up" class="max-w-wide mb-16"><iframe class="w-full bg-white border-b p-16" src="' +
           iframeUrl +
           '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({}, \'#comments-on-top\');"></iframe></div>'
       );
