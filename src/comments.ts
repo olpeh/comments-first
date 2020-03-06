@@ -12,20 +12,44 @@ const addCommentsIframe = () => {
 
   if (isArticlePage()) {
     const articleId = resolveId(document.location.pathname);
-    const iframeUrl = `https://${document.location.host}/iframe/comments/${articleId}`;
+    const iframeUrl = `/iframe/comments/${articleId}`;
 
-    let target = document.querySelector('#page-main-content ~ div h2');
+    let target = document.querySelector('main article h1');
     if (!target) {
-      // this means the headline is probably as h1?
-      target = document.querySelector('h1');
+      target = document.querySelector('#page-main-content ~ div h2');
+      console.log(
+        'Comments first extension: Did not find article headline with first try, second try found ',
+        target
+      );
     }
 
-    target.insertAdjacentHTML(
-      'afterend',
-      '<div id="clean-me-up" class="m-auto max-w-wide mb-16"><iframe class="w-full bg-white p-16" src="' +
-        iframeUrl +
-        '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({}, \'#comments-on-top\');"></iframe></div>'
-    );
+    if (target) {
+      console.log('Comments first extension: target is now ', target);
+      target.insertAdjacentHTML(
+        'afterend',
+        '<div id="clean-me-up" class="m-auto max-w-wide mb-16"><iframe class="w-full bg-white p-16" src="' +
+          iframeUrl +
+          '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({}, \'#comments-on-top\');"></iframe></div>'
+      );
+
+      setTimeout(() => {
+        // Try to remove the normal comments from below article if it's in DOM
+        const selector = `[src="${iframeUrl}"]:not(#comments-on-top)`;
+        const normalComments = document.querySelector(selector);
+        if (normalComments) {
+          // LOL what could go wrong?
+          normalComments.parentElement.parentElement.remove();
+        } else {
+          console.log(
+            'Comments first extension: Could not hide normal comments iframe'
+          );
+        }
+      }, 2000);
+    } else {
+      console.log(
+        'Comments first extension: Did not know where to move comments to'
+      );
+    }
   }
 };
 
@@ -36,7 +60,7 @@ const callback = function() {
     currentUrl = document.location.pathname;
     setTimeout(() => {
       addCommentsIframe();
-    }, 500);
+    }, 800);
   }
 };
 
@@ -45,4 +69,7 @@ const observer = new MutationObserver(callback);
 const config = { childList: true, subtree: true };
 observer.observe(target, config);
 
-addCommentsIframe();
+setTimeout(() => {
+  // Wait a bit – not a bullet proof solution
+  addCommentsIframe();
+}, 100);
