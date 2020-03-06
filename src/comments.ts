@@ -14,11 +14,15 @@ const addCommentsIframe = () => {
     const articleId = resolveId(document.location.pathname);
     const iframeUrl = `https://${document.location.host}/iframe/comments/${articleId}`;
 
-    const mainContent = document.getElementById('page-main-content');
+    let target = document.querySelector('#page-main-content ~ div h2');
+    if (!target) {
+      // this means the headline is probably as h1?
+      target = document.querySelector('h1');
+    }
 
-    mainContent.insertAdjacentHTML(
+    target.insertAdjacentHTML(
       'afterend',
-      '<div id="clean-me-up" class="m-auto max-w-wide mb-16"><iframe class="w-full bg-white border-b p-16" src="' +
+      '<div id="clean-me-up" class="m-auto max-w-wide mb-16"><iframe class="w-full bg-white p-16" src="' +
         iframeUrl +
         '" id="comments-on-top" scrolling="no" onload="window.iFrameResize({}, \'#comments-on-top\');"></iframe></div>'
     );
